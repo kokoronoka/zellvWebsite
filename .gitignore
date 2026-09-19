@@ -1,0 +1,9 @@
+# Large reference downloads from the old site (kept locally only)
+_content/images/
+_content/videos/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
