@@ -114,8 +114,13 @@ zell-v.com has no articles, so use the 16 articles from my.zell-v.com (owner app
 
 ---
 
+## Link paths (important)
+Links in the HTML are **relative** (`assets/css/main.css` on the home page, `../assets/...` inside `about/`). This lets the same files work at the domain root (zell-v.com) **and** in a subfolder (GitHub Pages: kokoronoka.github.io/zellvWebsite/). Do not change them to start with `/`, or the styles will not load on GitHub Pages.
+
+In `assets/js/site.js` the menu and footer links are still written starting with `/`. That file works out the site's folder from its own address and fixes them automatically, so keep writing them that way there.
+
 ## How to preview the site locally
-Links start with `/`, so opening `index.html` by double-clicking won't load the styles. Instead, run this in the project folder:
+Opening `index.html` by double-clicking mostly works now, but a local server behaves exactly like the real site. Run this in the project folder:
 ```
 python -m http.server 8080
 ```
@@ -154,3 +159,4 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-19 | WhatsApp number confirmed (+65 9382 2879); floating button added. Articles will use my.zell-v.com content. Added parallax scrolling to the home hero (owner's React/GSAP example rebuilt in plain JS, no React needed). |
 | 2026-09-19 | Hero now uses the owner's Swiss Alps artwork in 3 parallax layers (sky, Matterhorn range, foreground ridge); green backgrounds removed, same scroll effect. Originals kept in `_content/hero-source/` (1252×699; a higher-resolution set would look sharper on large screens). |
 | 2026-09-19 | **Phase 2 done**: 5 About pages built from zell-v.com content, with a shared page banner, About sub-menu, shared icon file (`assets/images/icons.svg`), testimonial filters and a timeline with year jump-bar. Tested desktop and mobile with no errors. |
+| 2026-09-20 | Fixed styles not loading on GitHub Pages: all page links converted from root-absolute (`/assets/...`) to relative, and `assets/js/site.js` now detects the site folder for the menu, footer and logo. Verified at the domain root and in a `/zellvWebsite/` subfolder. Added `.nojekyll`. |

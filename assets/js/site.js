@@ -3,9 +3,15 @@
   'use strict';
   document.documentElement.classList.add('js');
 
+  // Site root, worked out from this script's own URL (.../assets/js/site.js).
+  // Lets the site run at the domain root (zell-v.com/) or in a subfolder (GitHub Pages).
+  const SITE_ROOT = new URL('../../', document.currentScript.src).pathname;
+  const u = (path) => SITE_ROOT + String(path).replace(/^\//, '');
+
   /* ==========================================================
      EDIT HERE: navigation menu and footer details
-     Links are root-relative ("/about/...") so they work from any folder.
+     Write links starting with "/" (e.g. "/about/brand-story.html"). They are automatically
+     rewritten to match wherever the site is hosted (domain root or a subfolder).
      ========================================================== */
   const NAV = [
     {
@@ -87,14 +93,14 @@
 
   const normalise = (p) => p.replace(/index\.html$/, '').replace(/\/+$/, '/') || '/';
   const here = normalise(location.pathname);
-  const current = (href) => (normalise(href) === here ? ' aria-current="page"' : '');
-  const li = (items) => items.map((i) => `<li><a href="${i.href}"${current(i.href)}>${i.label}</a></li>`).join('');
+  const current = (href) => (normalise(u(href)) === here ? ' aria-current="page"' : '');
+  const li = (items) => items.map((i) => `<li><a href="${u(i.href)}"${current(i.href)}>${i.label}</a></li>`).join('');
 
   /* ---------- Header ---------- */
   function renderHeader(slot) {
     const desktop = NAV.map((item, n) => {
       if (!item.children) {
-        return `<li class="nav-item"><a class="nav-link" href="${item.href}"${current(item.href)}>${item.label}</a></li>`;
+        return `<li class="nav-item"><a class="nav-link" href="${u(item.href)}"${current(item.href)}>${item.label}</a></li>`;
       }
       return `<li class="nav-item has-dropdown">
         <button class="nav-link" type="button" aria-expanded="false" aria-controls="dd-${n}">${item.label}${icon('chevronDown')}</button>
@@ -103,7 +109,7 @@
     }).join('');
 
     const mobile = NAV.map((item, n) => {
-      if (!item.children) return `<li><a href="${item.href}"${current(item.href)}>${item.label}</a></li>`;
+      if (!item.children) return `<li><a href="${u(item.href)}"${current(item.href)}>${item.label}</a></li>`;
       return `<li>
         <button class="sub-toggle" type="button" aria-expanded="false" aria-controls="m-sub-${n}">${item.label}${icon('chevronDown')}</button>
         <ul class="sub-list" id="m-sub-${n}">${li(item.children)}</ul>
@@ -113,14 +119,14 @@
     slot.outerHTML = `
     <header class="site-header" id="top">
       <div class="container header-inner">
-        <a class="logo" href="/" aria-label="ZÉLL-V home">
-          <img class="logo-dark" src="/assets/images/brand/logo.png" alt="ZÉLL-V" width="350" height="78">
-          <img class="logo-light" src="/assets/images/brand/logo-white.png" alt="" width="350" height="78">
+        <a class="logo" href="${u('/')}" aria-label="ZÉLL-V home">
+          <img class="logo-dark" src="${u('/assets/images/brand/logo.png')}" alt="ZÉLL-V" width="350" height="78">
+          <img class="logo-light" src="${u('/assets/images/brand/logo-white.png')}" alt="" width="350" height="78">
         </a>
         <nav class="main-nav" aria-label="Main"><ul class="nav-list">${desktop}</ul></nav>
         <div class="header-actions">
-          <a class="btn btn-outline header-contact" href="/contact.html">Contact</a>
-          <a class="icon-btn" href="/cart.html" aria-label="Shopping cart">${icon('bag')}<span class="cart-count" hidden>0</span></a>
+          <a class="btn btn-outline header-contact" href="${u('/contact.html')}">Contact</a>
+          <a class="icon-btn" href="${u('/cart.html')}" aria-label="Shopping cart">${icon('bag')}<span class="cart-count" hidden>0</span></a>
           <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
             ${icon('menu', 'icon-open')}${icon('close', 'icon-close')}
           </button>
@@ -130,7 +136,7 @@
     <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile">
       <ul>${mobile}</ul>
       <div class="mobile-menu-foot">
-        <a class="btn btn-gold" href="/contact.html">Contact Us</a>
+        <a class="btn btn-gold" href="${u('/contact.html')}">Contact Us</a>
         <a class="btn btn-outline-light" href="tel:${CONTACT.phone.replace(/[^+\d]/g, '')}">Call ${CONTACT.phone}</a>
       </div>
     </nav>`;
@@ -143,7 +149,7 @@
     <footer class="site-footer">
       <div class="container footer-top">
         <div class="footer-brand">
-          <img src="/assets/images/brand/logo-white.png" alt="ZÉLL-V" width="350" height="78" loading="lazy">
+          <img src="${u('/assets/images/brand/logo-white.png')}" alt="ZÉLL-V" width="350" height="78" loading="lazy">
           <p>With over two decades of expertise in anti-ageing and regenerative wellness, ZÉLL-V is a pioneer in cellular therapy, powered by Swiss and German scientific expertise.</p>
           <h2 class="footer-label">Follow Us</h2>
           <ul class="footer-social">${SOCIAL.map((s) => `<li><a class="icon-btn" href="${s.href}" rel="noopener" target="_blank" aria-label="ZÉLL-V on ${s.label}">${icon(s.icon)}</a></li>`).join('')}</ul>
