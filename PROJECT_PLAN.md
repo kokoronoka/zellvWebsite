@@ -87,8 +87,9 @@ Keep the current content and restructure the design.
 
 ## Phase 4 — Wellness Retreat
 Keep the overall content and restructure the design.
-- [ ] Wellness Retreat page
-- [ ] Enquiry/booking form that saves to Google Sheets
+- [x] Wellness Retreat page (`wellness-retreat.html`): hero with the retreat film, intro, 8 programme cards with detail pop-ups (text taken from the zell-v.com "View More" images), 4-stage journey, 16-photo facilities gallery with a photo viewer, 3 awards, enquiry form
+- [x] Enquiry form built and tested; "Enquire about this plan" in each pop-up ticks the matching box in the form
+- [ ] **Connect the form to Google Sheets** (owner, about 5 minutes): follow the steps at the top of `integrations/google-sheets-retreat-form.gs`, then paste the Web app URL into `assets/js/retreat.js` → `FORM_ENDPOINT`. Until then, the form offers to send the visitor's details on WhatsApp instead. New enquiries are also emailed to enquiry@zell-v.com (can be switched off in the script).
 
 ## Site-wide
 - [x] Shared header, navigation and footer. Edit the menu, contact details and footer links at the top of `assets/js/site.js`.
@@ -170,3 +171,4 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-21 | Home hero now uses the owner's Alps sunrise video as the back layer. Plays forwards then backwards (16 s) so the loop has no jump; audio removed. 2.2 MB on desktop, 0.8 MB on phones. The still frame shows while loading and replaces the video when the visitor prefers reduced motion or uses data saver. Pauses when scrolled off screen. |
 | 2026-09-21 | Removed the parallax scroll effect and the smooth-scrolling library from the home hero (GSAP, Lenis and `parallax.js` deleted). The page scrolls normally; the video and ridge stay. |
 | 2026-09-21 | Removed the pine-ridge layer that covered the Shop Now button; the bottom fade now sits behind the buttons. Icons are now built into `assets/js/site.js`, so they also show when a page is opened straight from disk (add new icons there). |
+| 2026-09-21 | **Phase 4 built**: Wellness Retreat page from zell-v.com content, with programme pop-ups, facilities photo viewer and an enquiry form. Google Apps Script for the Sheet is in `integrations/`; waiting for the owner to deploy it and paste the URL. Tested at 390, 820 and 1440 px: no errors or sideways scrolling. Form checks, the WhatsApp fallback and a simulated Google Sheets submission all work. |
