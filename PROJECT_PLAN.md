@@ -64,7 +64,8 @@ Keep the current content and restructure the design.
 - [x] Home page (`index.html`), rebuilt on 2026-09-19 to follow zell-v.com content. Waiting for owner review.
 - [x] Shared stylesheet `assets/css/main.css` and script `assets/js/site.js`
 - [x] Optimised images in `assets/images/` (brand, home, products, doctors)
-- [x] Parallax hero: 4 image layers move at different speeds on scroll (GSAP ScrollTrigger + Lenis smooth scroll, loaded from CDN; code in `assets/js/parallax.js`). Turned off for visitors who prefer reduced motion, gentler on phones.
+- [x] Hero background is a looping Swiss Alps sunrise video (`hero-alps-1280.mp4` desktop, `hero-alps-854.mp4` phones, `hero-alps-poster.webp` still frame), Original video kept in `_content/hero-source/`.
+- [x] ~~Parallax hero~~ removed on 2026-09-21 at owner's request. The hero is now the video with the text on top.
 
 ## Phase 2 — About Us
 - [x] Cellular Therapy, including all 16 benefits (`about/cellular-therapy.html`)
@@ -166,3 +167,6 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-19 | **Phase 2 done**: 5 About pages built from zell-v.com content, with a shared page banner, About sub-menu, shared icon file (`assets/images/icons.svg`), testimonial filters and a timeline with year jump-bar. Tested desktop and mobile with no errors. |
 | 2026-09-20 | Fixed styles not loading on GitHub Pages: all page links converted from root-absolute (`/assets/...`) to relative, and `assets/js/site.js` now detects the site folder for the menu, footer and logo. Verified at the domain root and in a `/zellvWebsite/` subfolder. Added `.nojekyll`. |
 | 2026-09-21 | **Phase 3 done** (except live PayPal and shipping): shop built from zell-v.com products and USD prices. 6 product pages, 4 category pages, All Products, mini cart, cart page, PayPal checkout in test mode and an order confirmation page. Tested add to cart, option switching, quantity changes, remove, totals and PayPal buttons on desktop and mobile. |
+| 2026-09-21 | Home hero now uses the owner's Alps sunrise video as the back layer. Plays forwards then backwards (16 s) so the loop has no jump; audio removed. 2.2 MB on desktop, 0.8 MB on phones. The still frame shows while loading and replaces the video when the visitor prefers reduced motion or uses data saver. Pauses when scrolled off screen. |
+| 2026-09-21 | Removed the parallax scroll effect and the smooth-scrolling library from the home hero (GSAP, Lenis and `parallax.js` deleted). The page scrolls normally; the video and ridge stay. |
+| 2026-09-21 | Removed the pine-ridge layer that covered the Shop Now button; the bottom fade now sits behind the buttons. Icons are now built into `assets/js/site.js`, so they also show when a page is opened straight from disk (add new icons there). |

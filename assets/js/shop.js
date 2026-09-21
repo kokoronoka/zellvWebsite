@@ -13,7 +13,7 @@
   const money = (n) => `${SHOP.currencySymbol}${Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   const moneyShort = (n) => `${SHOP.currencySymbol}${Number(n).toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
   const round2 = (n) => Math.round(n * 100) / 100;
-  const ICON = (name) => `<svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="${u('/assets/images/icons.svg')}#i-${name}"/></svg>`;
+  const ICON = (name) => `<svg fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
   const product = (id) => PRODUCTS.find((p) => p.id === id);
   const option = (p, optId) => p && p.options.find((o) => o.id === optId);
