@@ -74,12 +74,15 @@ Keep the current content and restructure the design.
 - [x] History & Awards: 6 award cards and a 21-milestone timeline for 2016–2024 (`about/history.html`). Timeline photos and captions come from my.zell-v.com, because zell-v.com has no timeline. Owner will send the full awards list.
 
 ## Phase 3 — Products
-- [ ] Category pages: Detoxification, Rejuvenation, Anti-Ageing, Beauty
-- [ ] All Products page
-- [ ] Product detail page
-- [ ] Cart
-- [ ] PayPal checkout
-- [ ] Add the new products
+- [x] Product catalogue in one file: `assets/js/products.js` (names, categories, options, **prices**, shipping and PayPal settings)
+- [x] All Products page with category filters (`products/index.html`)
+- [x] Category pages: Detoxification, Rejuvenation, Anti-Ageing, Beauty
+- [x] Product pages: Platinum Plus 3, Platinum Plus, NMN, Phytogreen, Phytocell Serum (with option pickers), and Therapy (enquiry only)
+- [x] Slide-out mini cart and cart page (`cart.html`), cart saved in the visitor's browser
+- [x] PayPal checkout in **test mode** (`paypalClientId: 'sb'`) and an order confirmation page (`order-success.html`)
+- [ ] Switch PayPal to live: put the real Client ID in `assets/js/products.js`
+- [ ] Set the shipping rule in `assets/js/products.js` (currently shows "To be confirmed" and charges $0)
+- [ ] Add the new products (owner will send details)
 
 ## Phase 4 — Wellness Retreat
 Keep the overall content and restructure the design.
@@ -141,6 +144,8 @@ Then open http://localhost:8080 in a browser.
 - Shipping: flat fee, free shipping, or depends on the country? Which countries? *(owner will update)*
 - New product details (the owner will send these later)
 - Final product prices (using the old USD prices for now)
+- Platinum Plus 3: keep all 3 options? "Single Box" and "Limited Edition 45 Softgels Pack" are both $410 on zell-v.com
+- ZÉLL-V Therapy page text comes from my.zell-v.com (zell-v.com has no Therapy page). OK?
 - Full awards list with years for the History page *(owner will send once confirmed)*
 
 ---
@@ -160,3 +165,4 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-19 | Hero now uses the owner's Swiss Alps artwork in 3 parallax layers (sky, Matterhorn range, foreground ridge); green backgrounds removed, same scroll effect. Originals kept in `_content/hero-source/` (1252×699; a higher-resolution set would look sharper on large screens). |
 | 2026-09-19 | **Phase 2 done**: 5 About pages built from zell-v.com content, with a shared page banner, About sub-menu, shared icon file (`assets/images/icons.svg`), testimonial filters and a timeline with year jump-bar. Tested desktop and mobile with no errors. |
 | 2026-09-20 | Fixed styles not loading on GitHub Pages: all page links converted from root-absolute (`/assets/...`) to relative, and `assets/js/site.js` now detects the site folder for the menu, footer and logo. Verified at the domain root and in a `/zellvWebsite/` subfolder. Added `.nojekyll`. |
+| 2026-09-21 | **Phase 3 done** (except live PayPal and shipping): shop built from zell-v.com products and USD prices. 6 product pages, 4 category pages, All Products, mini cart, cart page, PayPal checkout in test mode and an order confirmation page. Tested add to cart, option switching, quantity changes, remove, totals and PayPal buttons on desktop and mobile. |
