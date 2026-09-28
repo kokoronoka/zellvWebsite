@@ -123,14 +123,67 @@
     });
   }
 
-  /* ---------- Product page ---------- */
-  function initProductPage() {
-    const root = document.querySelector('[data-product-page]');
-    if (!root) return;
-    const p = product(root.dataset.productPage);
-    if (!p || p.enquiryOnly) return;
+  /* ---------- Category pages: each product shown in full ---------- */
+  // <div data-product-showcase="rejuvenation"> lists every product in that category as a full-width
+  // section: large photo, full description, highlights, options, quantity and Add to Cart.
+  function showcase(p, i) {
+    const multi = p.options.length > 1;
+    const highlights = (p.highlights || []).map((h) => `<li>${esc(h)}</li>`).join('');
+    const wa = `https://wa.me/6593822879?text=${encodeURIComponent(`Hi ZÉLL-V, I would like to enquire about ${p.shortName}`)}`;
+    const buy = p.enquiryOnly
+      ? `<p class="price-note showcase-note">Available by consultation</p>
+         <div class="buy-row">
+           <a class="btn btn-primary" href="${wa}" target="_blank" rel="noopener">Enquire on WhatsApp ${ICON('message')}</a>
+         </div>`
+      : `<p class="price-lg"><span data-price>${money(p.options[0].price)}</span><small>${SHOP.currency}</small></p>
+         ${multi ? '<fieldset class="options" data-options></fieldset>' : ''}
+         <div>
+           <span class="field-label" id="qty-label-${esc(p.id)}">Quantity</span>
+           <div class="buy-row">
+             <div class="qty" role="group" aria-labelledby="qty-label-${esc(p.id)}">
+               <button type="button" data-qty-step="-1" aria-label="Decrease quantity">−</button>
+               <input type="number" value="1" min="1" max="99" inputmode="numeric" data-qty aria-label="Quantity">
+               <button type="button" data-qty-step="1" aria-label="Increase quantity">+</button>
+             </div>
+             <button class="btn btn-primary" type="button" data-add-to-cart>Add to Cart ${ICON('bag')}</button>
+           </div>
+         </div>`;
+    return `<article class="showcase-item reveal" id="${esc(p.id)}" data-showcase="${esc(p.id)}" aria-labelledby="sc-${esc(p.id)}">
+      <div class="showcase-media${p.enquiryOnly ? ' is-photo' : ''}">
+        ${p.badge ? `<span class="card-badge">${esc(p.badge)}</span>` : ''}
+        <a href="${u(p.url)}" tabindex="-1" aria-hidden="true"><img src="${u(p.image)}" alt="${esc(p.name)}" loading="${i === 0 ? 'eager' : 'lazy'}" width="900" height="900" data-product-image></a>
+      </div>
+      <div class="showcase-body product-buy">
+        <p class="eyebrow">${esc(categoryLabel(p.category))}</p>
+        <h3 id="sc-${esc(p.id)}"><a href="${u(p.url)}">${esc(p.shortName)}</a></h3>
+        <p class="tagline">${esc(p.tagline)}</p>
+        <p class="showcase-desc">${esc(p.description || p.summary)}</p>
+        ${highlights ? `<ul class="check-list">${highlights}</ul>` : ''}
+        <div class="buy-box">
+          ${buy}
+          <a class="link-arrow" href="${u(p.url)}">Full product details ${ICON('arrow')}</a>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function initShowcases() {
+    document.querySelectorAll('[data-product-showcase]').forEach((wrap) => {
+      const list = PRODUCTS.filter((p) => p.category === wrap.dataset.productShowcase);
+      wrap.innerHTML = list.map(showcase).join('') || '<p>No products in this category yet.</p>';
+      wrap.querySelectorAll('[data-showcase]').forEach((item) => {
+        const p = product(item.dataset.showcase);
+        if (!p.enquiryOnly) bindBuy(item, p, item.querySelector('[data-product-image]'));
+      });
+      window.ZV?.observeReveal?.(wrap);
+    });
+  }
+
+  /* ---------- Buy box: options, price, quantity, Add to Cart ---------- */
+  // Used by product pages and category pages. `root` contains [data-price], [data-options],
+  // [data-qty], [data-qty-step] and [data-add-to-cart]; imgEl swaps to the chosen option's photo.
+  function bindBuy(root, p, imgEl) {
     const priceEl = root.querySelector('[data-price]');
-    const imgEl = document.querySelector('[data-product-image]');
     const optWrap = root.querySelector('[data-options]');
     const qtyInput = root.querySelector('[data-qty]');
     let current = p.options[0];
@@ -139,7 +192,7 @@
       if (p.options.length > 1) {
         optWrap.innerHTML = `<legend class="field-label">Choose option</legend>` + p.options.map((o, i) => `
           <label class="option-card">
-            <input type="radio" name="option" value="${esc(o.id)}" ${i === 0 ? 'checked' : ''}>
+            <input type="radio" name="option-${esc(p.id)}" value="${esc(o.id)}" ${i === 0 ? 'checked' : ''}>
             <span class="option-body"><span class="option-label">${esc(o.label)}</span><span class="option-price">${money(o.price)}</span></span>
           </label>`).join('');
         optWrap.addEventListener('change', (e) => {
@@ -162,6 +215,15 @@
       addToCart(p.id, current.id, parseInt(qtyInput?.value, 10) || 1);
       openDrawer();
     });
+  }
+
+  /* ---------- Product page ---------- */
+  function initProductPage() {
+    const root = document.querySelector('[data-product-page]');
+    if (!root) return;
+    const p = product(root.dataset.productPage);
+    if (!p || p.enquiryOnly) return;
+    bindBuy(root, p, document.querySelector('[data-product-image]'));
   }
 
   /* ---------- Mini cart drawer ---------- */
@@ -330,6 +392,7 @@
 
   function init() {
     initGrids();
+    initShowcases();
     initProductPage();
     initCartPage();
     initSuccess();

@@ -250,18 +250,21 @@
     badge.textContent = count;
     badge.hidden = count === 0;
   }
-  window.ZV = Object.assign(window.ZV || {}, { updateCartCount });
+  window.ZV = Object.assign(window.ZV || {}, { updateCartCount, observeReveal });
 
-  function initReveal() {
-    const els = document.querySelectorAll('.reveal');
+  // Fade-in on scroll. Content added later by other scripts calls window.ZV.observeReveal(container).
+  let revealIO;
+  function observeReveal(scope = document) {
+    const els = scope.querySelectorAll('.reveal:not(.is-visible)');
     if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('is-visible')); return; }
-    const io = new IntersectionObserver((entries) => {
+    revealIO ||= new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealIO.unobserve(entry.target); }
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
-    els.forEach((el) => io.observe(el));
+    els.forEach((el) => revealIO.observe(el));
   }
+  function initReveal() { observeReveal(); }
 
   // Testimonial slider: manual only (no autoplay), keyboard and screen-reader friendly
   function initSliders() {
