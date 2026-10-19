@@ -345,6 +345,8 @@
       if (!target) return;
       const items = [...target.querySelectorAll('[data-tags]')];
       const status = document.querySelector(`[data-filter-status="${group.dataset.filterGroup}"]`);
+      // Word used in the status message, e.g. data-filter-noun="article,articles" (default: story/stories)
+      const [one, many] = (group.dataset.filterNoun || 'story,stories').split(',');
       buttons.forEach((btn) => {
         const f = btn.dataset.filter;
         const n = f === 'all' ? items.length : items.filter((i) => i.dataset.tags.split(' ').includes(f)).length;
@@ -358,7 +360,7 @@
             item.classList.toggle('is-entering', match);
             if (match) shown++;
           });
-          if (status) status.textContent = `Showing ${shown} ${shown === 1 ? 'story' : 'stories'}`;
+          if (status) status.textContent = `Showing ${shown} ${shown === 1 ? one : many}`;
         });
       });
     });
@@ -384,6 +386,74 @@
 
   // Background videos: <video data-bg-video data-src="..." data-src-mobile="...">.
   // Loads the smaller file on phones; keeps the poster image for reduced motion / data saver.
+  // Photo viewer: <ul data-gallery="Facilities photos"> with <button data-lightbox> items wrapping an <img>.
+  // Each [data-gallery] group steps through its own photos; the caption is the image's alt text.
+  function initGalleries() {
+    const groups = [...document.querySelectorAll('[data-gallery]')].filter((g) => g.querySelector('[data-lightbox]'));
+    if (!groups.length) return;
+    const dialog = document.createElement('dialog');
+    dialog.className = 'lightbox';
+    dialog.innerHTML = `
+      <figure><img alt=""><figcaption><span class="cap"></span><span class="count"></span></figcaption></figure>
+      <button class="lightbox-nav prev" type="button" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-left"/></svg></button>
+      <button class="lightbox-nav next" type="button" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-right"/></svg></button>
+      <button class="modal-close" type="button" aria-label="Close photos">${icon('close')}</button>`;
+    document.body.appendChild(dialog);
+    const img = dialog.querySelector('img');
+    const cap = dialog.querySelector('.cap');
+    const count = dialog.querySelector('.count');
+    let items = [];
+    let index = 0;
+    const show = (i) => {
+      index = (i + items.length) % items.length;
+      const thumb = items[index].querySelector('img');
+      img.src = thumb.currentSrc || thumb.src;
+      img.alt = thumb.alt;
+      cap.textContent = thumb.alt;
+      count.textContent = `${index + 1} / ${items.length}`;
+    };
+    groups.forEach((group) => {
+      const list = [...group.querySelectorAll('[data-lightbox]')];
+      list.forEach((item, i) => item.addEventListener('click', () => {
+        items = list;
+        dialog.setAttribute('aria-label', group.dataset.gallery || 'Photos');
+        show(i);
+        dialog.showModal();
+        document.body.classList.add('no-scroll');
+      }));
+    });
+    dialog.querySelector('.prev').addEventListener('click', () => show(index - 1));
+    dialog.querySelector('.next').addEventListener('click', () => show(index + 1));
+    dialog.querySelector('.modal-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', () => { document.body.classList.remove('no-scroll'); items[index]?.focus(); });
+    dialog.addEventListener('click', (e) => { if (e.target === dialog || e.target.tagName === 'FIGURE') dialog.close(); });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    // Swipe on phones
+    let startX = null;
+    dialog.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+    dialog.addEventListener('touchend', (e) => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+  }
+
+  // Region cards highlight their map pin: <li data-region="asean"> ↔ <span data-region-pin="asean">
+  function initRegionMap() {
+    document.querySelectorAll('[data-region]').forEach((card) => {
+      const pin = document.querySelector(`[data-region-pin="${card.dataset.region}"]`);
+      if (!pin) return;
+      const on = (state) => { pin.classList.toggle('is-active', state); card.classList.toggle('is-active', state); };
+      card.addEventListener('mouseenter', () => on(true));
+      card.addEventListener('mouseleave', () => on(false));
+      card.addEventListener('click', () => on(!pin.classList.contains('is-active')));
+    });
+  }
+
   function initBgVideos() {
     const videos = document.querySelectorAll('video[data-bg-video]');
     if (!videos.length) return;
@@ -457,6 +527,7 @@
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol>
     <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
     <symbol id="i-message" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
   `;
   function injectIcons() {
     const holder = document.createElement('div');
@@ -485,6 +556,8 @@
     initFilters();
     initScrollSpy();
     initBgVideos();
+    initGalleries();
+    initRegionMap();
     // Scroll the current page's pill into view in horizontally scrolling sub-menus (mobile)
     document.querySelectorAll('.subnav ul').forEach((ul) => {
       const active = ul.querySelector('[aria-current="page"]');

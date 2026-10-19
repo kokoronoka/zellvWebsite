@@ -91,7 +91,7 @@ Keep the current content and restructure the design.
 Keep the overall content and restructure the design.
 - [x] Wellness Retreat page (`wellness-retreat.html`): hero with the retreat film, intro, 8 programme cards with detail pop-ups (text taken from the zell-v.com "View More" images), 4-stage journey, 16-photo facilities gallery with a photo viewer, 3 awards, enquiry form
 - [x] Enquiry form built and tested; "Enquire about this plan" in each pop-up ticks the matching box in the form
-- [ ] **Connect the form to Google Sheets** (owner, about 5 minutes): follow the steps at the top of `integrations/google-sheets-retreat-form.gs`, then paste the Web app URL into `assets/js/retreat.js` → `FORM_ENDPOINT`. Until then, the form offers to send the visitor's details on WhatsApp instead. New enquiries are also emailed to enquiry@zell-v.com (can be switched off in the script).
+- [x] Form connected to Google Sheets (2026-10-19): the Web app URL is set in `assets/js/retreat.js` (`FORM_ENDPOINT`). The endpoint responds. Owner to send one real test enquiry and confirm the row and notification email arrive.
 
 ## Site-wide
 - [x] Shared header, navigation and footer. Edit the menu, contact details and footer links at the top of `assets/js/site.js`.
@@ -100,13 +100,14 @@ Keep the overall content and restructure the design.
 
 ## Phase 5 — Global Presence / Business Associate
 Keep the overall content and restructure the design.
-- [ ] Global Presence / Business Associate page
+- [x] Global Presence / Business page (`global-presence.html`): uses selected content from the owner's business page (kokoronoka.github.io/businessZellv): hero with stats, the opportunity, the business model, an activity carousel, an interactive map (edit `REGIONS` in `assets/js/global.js`), centres, press, and a partner form that sends via WhatsApp. Products, retreats, doctors and testimonials are left to their own pages to avoid repeating them.
 
 ## Phase 6 — Articles
-zell-v.com has no articles, so use the 16 articles from my.zell-v.com (owner approved 2026-09-19).
-- [ ] Articles listing page
-- [ ] Article detail page
-- [ ] Move the existing articles over
+zell-v.com has no articles, so use the articles from my.zell-v.com (owner approved 2026-09-19). There are 14, not 16 as first counted.
+- [x] Articles listing page (`articles/index.html`): newest first, with the latest as a large feature card, and topic filters (Cellular Therapy, Anti-Ageing, Skin & Beauty, Nutrition & Detox, Healthy Living)
+- [x] Article pages (`articles/<name>.html`): date and reading time, main image, contents list that highlights the current section, featured product for the topic, WhatsApp help, share buttons, health disclaimer, older/newer links, related articles, and Article SEO data
+- [x] All 14 articles moved over with their images. Links to my.zell-v.com pages now point to the matching pages on this site, the old Malaysian WhatsApp buttons were removed, and the unlinked "Learn More" teasers were dropped.
+- To add an article: copy an existing article page, change the text, and add a card to `articles/index.html` (set `data-tags` to a topic).
 
 ## Phase 7 — Tracking & Analytics
 - [ ] Google Analytics 4
@@ -177,3 +178,11 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-28 | Category pages (Detoxification, Rejuvenation, Anti-Ageing, Beauty) redesigned to explain each topic before showing the products, with benefits cards, the ZÉLL-V approach, a Platinum Plus 3 vs Platinum Plus comparison, FAQs and a category menu. All Products unchanged. Tested desktop and mobile: no errors or sideways scrolling. |
 | 2026-09-28 | Category pages now show each product in full instead of cards: large photo beside the full description, key points, price, option choice, quantity and Add to Cart, alternating sides. The description and key points are the new `description` and `highlights` fields in `assets/js/products.js`. All Products and the other card lists are unchanged. Tested buying from the category pages, the product pages and the cart: no errors. |
 | 2026-10-15 | Added ZÉLL-V NMN Plus (Anti-Ageing) from zellvnmn.com: product page with the formula, Swiss origin, capsule and Miron glass sections, two short silent videos (under 1 MB each) and a WhatsApp enquiry button. It also appears on All Products, the Anti-Ageing page (product, approach card and FAQ) and in the footer. Background videos now download only when scrolled near. |
+| 2026-10-19 | Owner's new photos: ZÉLL-V Therapy now shows the Therapy box (`therapy-box.webp`); ZÉLL-V NMN Plus now shows the bottle and box cut out onto white (`nmn-plus.webp`); Brand Story's "A one-stop rejuvenation centre" now shows the ZÉLL-V reception (`about/hub-reception.webp`). |
+| 2026-10-19 | **Phase 5 done**: Global Presence / Business Associate page built from zell-v.com content. The photo viewer moved into `assets/js/site.js`, so any page can use it (`data-gallery` and `data-lightbox`). Tested desktop, tablet and mobile: no errors or sideways scrolling. |
+| 2026-10-19 | Global Presence rebuilt to follow the owner's business page design and content (kokoronoka.github.io/businessZellv), adapted to this site's fonts and colours. Page script: `assets/js/global.js`. Tested on desktop, tablet and mobile with no errors; tabs, doctor filters, stories, map, carousel, photo viewer and the WhatsApp form all work. |
+| 2026-10-19 | Global Presence trimmed at the owner's request: removed the Science/products, retreats, doctors, testimonials and "The Beginning" sections, because they repeat other pages. Unused images, styles and script removed. Retested on desktop, tablet and mobile with no errors. |
+| 2026-10-19 | Retreat form connected to the owner's Google Apps Script web app. Endpoint check OK. |
+| 2026-10-19 | **Phase 6 done**: Articles listing plus 14 article pages from my.zell-v.com. Tested on desktop and mobile: no errors, missing images or broken links. |
+| 2026-10-19 | Home page "Our Product" now includes ZÉLL-V NMN Plus (New, by consultation). The 5 cards sit in one row on desktop and become a swipeable row on tablets and phones. Note: the home page product cards are written by hand in `index.html`, so new products must be added there too. |
+| 2026-10-19 | Owner: the home page "Our Product" section shows only Platinum Plus 3, NMN Plus and Phytogreen. They sit three across on desktop and tablet, and in a swipeable row on phones. All products are still on the Products pages. |

@@ -1,4 +1,4 @@
-/* ZÉLL-V — Wellness Retreat page: programme pop-ups, facilities photo viewer, enquiry form. */
+/* ZÉLL-V — Wellness Retreat page: programme pop-ups and enquiry form. (The facilities photo viewer is in site.js.) */
 (function () {
   'use strict';
 
@@ -8,7 +8,7 @@
      (setup steps: integrations/google-sheets-retreat-form.gs).
      While it is empty, the form asks visitors to send their details on WhatsApp instead.
      ========================================================== */
-  const FORM_ENDPOINT = '';
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxvl7_KS66_wnYSkgeuCZp6zXyOxX6RkbTYaM2c7HltjgjyiC6AaXMgQvfSQGAjTt3W/exec';
   const WHATSAPP = '6593822879';
   const EMAIL = 'enquiry@zell-v.com';
   /* ========================================================== */
@@ -48,54 +48,6 @@
       option.classList.add('is-flash');
     }
     setTimeout(() => form.elements.firstName.focus({ preventScroll: true }), 700);
-  }
-
-  /* ---------- Facilities photo viewer ---------- */
-  function initGallery() {
-    const items = [...document.querySelectorAll('[data-lightbox]')];
-    if (!items.length) return;
-    const dialog = document.createElement('dialog');
-    dialog.className = 'lightbox';
-    dialog.setAttribute('aria-label', 'Facilities photos');
-    dialog.innerHTML = `
-      <figure><img alt=""><figcaption><span class="cap"></span><span class="count"></span></figcaption></figure>
-      <button class="lightbox-nav prev" type="button" aria-label="Previous photo">${svg('left')}</button>
-      <button class="lightbox-nav next" type="button" aria-label="Next photo">${svg('right')}</button>
-      <button class="modal-close" type="button" aria-label="Close photos">${svg('x')}</button>`;
-    document.body.appendChild(dialog);
-
-    const img = dialog.querySelector('img');
-    const cap = dialog.querySelector('.cap');
-    const count = dialog.querySelector('.count');
-    let index = 0;
-    const show = (i) => {
-      index = (i + items.length) % items.length;
-      const thumb = items[index].querySelector('img');
-      img.src = thumb.currentSrc || thumb.src;
-      img.alt = thumb.alt;
-      cap.textContent = thumb.alt;
-      count.textContent = `${index + 1} / ${items.length}`;
-    };
-
-    items.forEach((item, i) => item.addEventListener('click', () => { show(i); dialog.showModal(); lockScroll(true); }));
-    dialog.querySelector('.prev').addEventListener('click', () => show(index - 1));
-    dialog.querySelector('.next').addEventListener('click', () => show(index + 1));
-    dialog.querySelector('.modal-close').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('close', () => { lockScroll(false); items[index].focus(); });
-    dialog.addEventListener('click', (e) => { if (e.target === dialog || e.target.tagName === 'FIGURE') dialog.close(); });
-    dialog.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') show(index - 1);
-      if (e.key === 'ArrowRight') show(index + 1);
-    });
-    // Swipe on phones
-    let startX = null;
-    dialog.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
-    dialog.addEventListener('touchend', (e) => {
-      if (startX === null) return;
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
-      startX = null;
-    });
   }
 
   /* ---------- Enquiry form → Google Sheets ---------- */
@@ -209,7 +161,6 @@
 
   function init() {
     initPlans();
-    initGallery();
     initForm();
   }
 
