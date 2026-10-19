@@ -72,7 +72,7 @@
       ? '<span class="price price-note">By consultation</span>'
       : `<span class="price">${multi ? '<small class="from">From</small>' : ''}${moneyShort(fromPrice(p))}<small>${SHOP.currency}</small></span>`;
     return `<article class="product-card shop-card" data-category="${esc(p.category)}">
-      <a class="product-card-media" href="${u(p.url)}" tabindex="-1" aria-hidden="true">
+      <a class="product-card-media${p.photo ? ' is-photo' : ''}" href="${u(p.url)}" tabindex="-1" aria-hidden="true">
         ${p.badge ? `<span class="card-badge">${esc(p.badge)}</span>` : ''}
         <img src="${u(p.image)}" alt="" loading="lazy" width="600" height="600">
       </a>
@@ -149,7 +149,7 @@
            </div>
          </div>`;
     return `<article class="showcase-item reveal" id="${esc(p.id)}" data-showcase="${esc(p.id)}" aria-labelledby="sc-${esc(p.id)}">
-      <div class="showcase-media${p.enquiryOnly ? ' is-photo' : ''}">
+      <div class="showcase-media${p.photo ? ' is-photo' : ''}">
         ${p.badge ? `<span class="card-badge">${esc(p.badge)}</span>` : ''}
         <a href="${u(p.url)}" tabindex="-1" aria-hidden="true"><img src="${u(p.image)}" alt="${esc(p.name)}" loading="${i === 0 ? 'eager' : 'lazy'}" width="900" height="900" data-product-image></a>
       </div>

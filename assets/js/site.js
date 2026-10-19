@@ -57,6 +57,7 @@
     { label: 'ZÉLL-V Platinum Plus 3', href: '/products/platinum-plus-3.html' },
     { label: 'ZÉLL-V Platinum Plus', href: '/products/platinum-plus.html' },
     { label: 'ZÉLL-V NMN', href: '/products/nmn.html' },
+    { label: 'ZÉLL-V NMN Plus', href: '/products/nmn-plus.html' },
     { label: 'ZÉLL-V Phytogreen', href: '/products/phytogreen.html' },
     { label: 'ZÉLL-V Phytocell Serum', href: '/products/phytocell-serum.html' },
     { label: 'Wellness Retreat', href: '/wellness-retreat.html' },
@@ -391,12 +392,14 @@
     if (reduce || saveData) return;
     const small = window.matchMedia('(max-width: 699px)').matches;
     videos.forEach((video) => {
-      video.src = (small && video.dataset.srcMobile) || video.dataset.src;
       video.muted = true;
       const play = () => video.play().catch(() => { /* autoplay blocked: poster stays */ });
-      play();
-      // Pause while off screen to save battery and CPU
-      new IntersectionObserver(([entry]) => (entry.isIntersecting ? play() : video.pause())).observe(video);
+      // Download only when the video comes near the screen; pause while off screen to save battery and data
+      new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) { video.pause(); return; }
+        if (!video.getAttribute('src')) video.src = (small && video.dataset.srcMobile) || video.dataset.src;
+        play();
+      }, { rootMargin: '200px 0px' }).observe(video);
     });
   }
 

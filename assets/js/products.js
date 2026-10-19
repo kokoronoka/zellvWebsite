@@ -11,6 +11,8 @@
      summary     – short text on product cards (All Products, "You may also like")
      description – full description on the category pages (Detoxification, Rejuvenation…)
      highlights  – key points listed under the description on the category pages
+   photo: true  – the image is a photograph, so it fills its frame instead of sitting on white
+   enquiryOnly  – no price or cart; visitors are asked to enquire on WhatsApp
    ========================================================================== */
 window.ZV_SHOP = {
   currency: 'USD',
@@ -98,6 +100,27 @@ window.ZV_PRODUCTS = [
     options: [{ id: 'single', label: 'Single Box', price: 555 }],
   },
   {
+    id: 'nmn-plus',
+    name: 'ZÉLL-V NMN Plus',
+    shortName: 'ZÉLL-V NMN Plus',
+    category: 'anti-ageing',
+    tagline: 'Swiss longevity science',
+    summary: 'A complete Swiss-made longevity formula: Longevir® NMN, Trans-Resveratrol, Sharp-PS® Green and AstaReal® astaxanthin. Available by consultation.',
+    description: 'What if growing older didn’t mean slowing down? Formulated and manufactured in Switzerland, ZÉLL-V NMN Plus combines four premium, trademarked ingredients in one synergistic formula to restore NAD⁺, defend cells against oxidative stress and support healthy ageing from within.',
+    highlights: [
+      'Made in Switzerland in a SwissMedic-approved facility',
+      'Longevir® NMN, over 99% pure, to restore NAD⁺ levels',
+      'With Trans-Resveratrol, Sharp-PS® Green and AstaReal® astaxanthin',
+      '60 capsules in Miron® violet glass, a full month of daily use',
+    ],
+    url: '/products/nmn-plus.html',
+    image: '/assets/images/products/nmn-plus.webp',
+    photo: true,
+    badge: 'New',
+    enquiryOnly: true,
+    options: [],
+  },
+  {
     id: 'therapy',
     name: 'ZÉLL-V Therapy',
     shortName: 'ZÉLL-V Therapy',
@@ -113,6 +136,7 @@ window.ZV_PRODUCTS = [
     ],
     url: '/products/therapy.html',
     image: '/assets/images/products/therapy-skin.webp',
+    photo: true,
     enquiryOnly: true,
     options: [],
   },

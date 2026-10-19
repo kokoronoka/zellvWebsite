@@ -84,6 +84,7 @@ Keep the current content and restructure the design.
 - [x] PayPal checkout in **test mode** (`paypalClientId: 'sb'`) and an order confirmation page (`order-success.html`)
 - [ ] Switch PayPal to live: put the real Client ID in `assets/js/products.js`
 - [ ] Set the shipping rule in `assets/js/products.js` (currently shows "To be confirmed" and charges $0)
+- [x] ZÉLL-V NMN Plus added under Anti-Ageing (`products/nmn-plus.html`), content and images from zellvnmn.com. Enquiry only, because zellvnmn.com shows no price. **To sell it online:** in `assets/js/products.js` remove `enquiryOnly: true` and add a price option.
 - [ ] Add the new products (owner will send details)
 
 ## Phase 4 — Wellness Retreat
@@ -137,7 +138,7 @@ Then open http://localhost:8080 in a browser.
 |---|---|
 | Home | `index.html` |
 | About pages | `about/cellular-therapy.html`, `about/brand-story.html`, `about/medical-panel.html`, `about/testimonials.html`, `about/history.html` |
-| Products | `products/index.html`, category pages `products/detoxification.html`, `rejuvenation.html`, `anti-ageing.html`, `beauty.html`, product pages `products/platinum-plus-3.html`, `platinum-plus.html`, `nmn.html`, `phytogreen.html`, `phytocell-serum.html` (zell-v.com product names) |
+| Products | `products/index.html`, category pages `products/detoxification.html`, `rejuvenation.html`, `anti-ageing.html`, `beauty.html`, product pages `products/platinum-plus-3.html`, `platinum-plus.html`, `nmn.html`, `nmn-plus.html`, `phytogreen.html`, `phytocell-serum.html` (zell-v.com product names) |
 | Other | `wellness-retreat.html`, `global-presence.html`, `articles/index.html`, `contact.html`, `cart.html`, `privacy-policy.html`, `terms.html`, `disclaimer.html` |
 
 ---
@@ -175,3 +176,4 @@ Then open http://localhost:8080 in a browser.
 | 2026-09-21 | **Phase 4 built**: Wellness Retreat page from zell-v.com content, with programme pop-ups, facilities photo viewer and an enquiry form. Google Apps Script for the Sheet is in `integrations/`; waiting for the owner to deploy it and paste the URL. Tested at 390, 820 and 1440 px: no errors or sideways scrolling. Form checks, the WhatsApp fallback and a simulated Google Sheets submission all work. |
 | 2026-09-28 | Category pages (Detoxification, Rejuvenation, Anti-Ageing, Beauty) redesigned to explain each topic before showing the products, with benefits cards, the ZÉLL-V approach, a Platinum Plus 3 vs Platinum Plus comparison, FAQs and a category menu. All Products unchanged. Tested desktop and mobile: no errors or sideways scrolling. |
 | 2026-09-28 | Category pages now show each product in full instead of cards: large photo beside the full description, key points, price, option choice, quantity and Add to Cart, alternating sides. The description and key points are the new `description` and `highlights` fields in `assets/js/products.js`. All Products and the other card lists are unchanged. Tested buying from the category pages, the product pages and the cart: no errors. |
+| 2026-10-15 | Added ZÉLL-V NMN Plus (Anti-Ageing) from zellvnmn.com: product page with the formula, Swiss origin, capsule and Miron glass sections, two short silent videos (under 1 MB each) and a WhatsApp enquiry button. It also appears on All Products, the Anti-Ageing page (product, approach card and FAQ) and in the footer. Background videos now download only when scrolled near. |
